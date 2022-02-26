@@ -1,0 +1,24 @@
+[package]
+name = "flashcards"
+description = "Flashcards is a powerful application for memorization cards management."
+version = "0.1.0"
+edition = "2021"
+authors = ["Mark Meliksetyan <markmelix@gmail.com>"]
+readme = "README.md"
+homepage = "https://github.com/flashcards-project/flashcards"
+repository = "https://github.com/flashcards-project/flashcards"
+license = "MIT OR Apache-2.0"
+keywords = ["flashcard", "study", "learn", "card"]
+rust-version = "1.59"
+default-run = "flashcards"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde = { version = "1.0.136", features = ["derive"] }
+uuid = { version = "0.8.2", features = ["v4"] }
+bincode = "1.3.3"
+flate2 = "1.0.22"
+tar = "0.4.38"
+fs_extra = "1.2.0"
+tempfile = "3.3.0"

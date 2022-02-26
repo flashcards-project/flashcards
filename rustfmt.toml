@@ -1,0 +1,27 @@
+# rustfmt configuration
+#
+# To apply these style settings to your code run `cargo fmt` command to format
+# the whole code or `rustfmt` one to format only specified file. You can
+# also format all your code automatically after every file saving using an
+# editor plugin or create git hook to do that for you.
+# 
+# Please note that all settings not specified in this file are equal to the
+# default ones. You can see all default settings and their descriptions by
+# following the link below.
+# 
+# See https://rust-lang.github.io/rustfmt for more information about each option
+
+# Format code according to specified Rust edition
+edition = "2021"
+
+# Maximum width of each line
+max_width = 80
+
+# Number of spaces per tab
+tab_spaces = 4
+
+# Use tab characters for indentation, spaces for alignment
+hard_tabs = true
+
+# Line endings will be converted to \n
+newline_style = "Unix"
