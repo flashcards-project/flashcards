@@ -300,7 +300,7 @@ pub(crate) mod error {
 			if cfg!(debug_assertions) {
 				write!(
 					f,
-					"{file}:{line}:{column}. {}: {}",
+					"{kind} in {file}:{line}:{column}: {error}",
 					kind = self.kind,
 					error = self.error,
 					file = self.file,
