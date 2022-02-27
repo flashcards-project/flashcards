@@ -1,7 +1,7 @@
 [package]
 name = "flashcards"
 description = "Flashcards is a powerful application for memorization cards management."
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Mark Meliksetyan <markmelix@gmail.com>"]
 readme = "README.md"
