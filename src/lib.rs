@@ -267,26 +267,58 @@ pub(crate) mod error {
 	/// Error returned by most of functions in this crate.
 	#[derive(Debug)]
 	pub struct Error {
+		error: Box<dyn error::Error + Send + Sync>,
 		kind: Kind,
-		error: Box<dyn error::Error>,
+		file: &'static str,
+		line: u32,
+		column: u32,
+	}
+
+	impl Error {
+		pub(crate) fn new<E>(
+			error: E,
+			kind: Kind,
+			file: &'static str,
+			line: u32,
+			column: u32,
+		) -> Self
+		where
+			E: Into<Box<dyn error::Error + Send + Sync>>,
+		{
+			Self {
+				error: error.into(),
+				kind,
+				file,
+				line,
+				column,
+			}
+		}
 	}
 
 	impl fmt::Display for Error {
 		fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-			write!(f, "{}: {}", self.kind, self.error)
+			if cfg!(debug_assertions) {
+				write!(
+					f,
+					"{file}:{line}:{column}. {}: {}",
+					kind = self.kind,
+					error = self.error,
+					file = self.file,
+					line = self.line,
+					column = self.column
+				)
+			} else {
+				write!(
+					f,
+					"{kind}: {error}",
+					kind = self.kind,
+					error = self.error
+				)
+			}
 		}
 	}
 
 	impl error::Error for Error {}
-
-	impl From<(Kind, Box<dyn error::Error>)> for Error {
-		fn from(t: (Kind, Box<dyn error::Error>)) -> Self {
-			Self {
-				kind: t.0,
-				error: t.1,
-			}
-		}
-	}
 
 	/// Kind of errors returned by some functions in this crate.
 	// We're allowing dead code here because some variants don't have to be
@@ -341,10 +373,26 @@ pub(crate) mod error {
 	/// [`ErrorKind`](Kind), where $kind is a first argument.
 	macro_rules! err {
 		() => {
-			|e| (_ERROR_KIND, e.into())
+			|error| {
+				$crate::error::Error::new(
+					error,
+					_ERROR_KIND,
+					file!(),
+					line!(),
+					column!(),
+				)
+			}
 		};
 		($kind:ident) => {
-			|e| ($crate::error::Kind::$kind, e.into())
+			|error| {
+				$crate::error::Error::new(
+					error,
+					$crate::error::Kind::$kind,
+					file!(),
+					line!(),
+					column!(),
+				)
+			}
 		};
 	}
 
